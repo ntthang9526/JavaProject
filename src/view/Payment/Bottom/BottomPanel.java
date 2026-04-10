@@ -60,9 +60,23 @@ public class BottomPanel extends JPanel {
                 }
             }
         });
+
+        payButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (cart.tableModel.getRowCount() == 0){
+                    JOptionPane.showMessageDialog(null, "Giỏ hàng đang trống!","Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                Window parentWindow = SwingUtilities.getWindowAncestor(BottomPanel.this); // Tìm frame cha
+                PaymentDialog paymentDialog = new PaymentDialog((Frame) parentWindow, cart);
+                paymentDialog.setVisible(true);
+            }
+        });
     }
     private JButton Buttons(String s, Color c){
         JButton btn = new JButton(s);
+        btn.setFocusable(false);
         btn.setBorderPainted(false);
         btn.setBackground(c);
         btn.setForeground(Color.WHITE);

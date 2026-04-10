@@ -18,6 +18,7 @@ public class CenterLeftPanel extends JPanel{
     private JTable cartTable;
     public DefaultTableModel tableModel;
     private Order order;
+    private JTextField barcodeTextField;
     private boolean isUpdating = false;
     private JLabel subTotalLabel;
     private JLabel totalDiscountLabel;
@@ -29,8 +30,7 @@ public class CenterLeftPanel extends JPanel{
         setPreferredSize(new Dimension(560,400));
 
         order = new Order();
-
-        String[] columnNames = {"Mã","Tên sản phẩm","Số lượng","Đơn giá","Chiết khấu","Thành tiền"}; //Danh sách các cột
+        String[] columnNames = {"STT","Tên sản phẩm","Số lượng","Đơn giá","Chiết khấu","Thành tiền"}; //Danh sách các cột
         tableModel = new DefaultTableModel(columnNames,0){
             @Override
                 public boolean isCellEditable(int row, int column) {
@@ -41,7 +41,6 @@ public class CenterLeftPanel extends JPanel{
                     return false; 
                 }
         }; // Tạo bảng mặc định gồm các cột
-
         // SỬA SỐ LƯỢNG VÀ GIÁ TIỀN
         tableModel.addTableModelListener(new javax.swing.event.TableModelListener() {
             @Override
@@ -90,32 +89,33 @@ public class CenterLeftPanel extends JPanel{
         columnModel.getColumn(0).setMaxWidth(65);
         columnModel.getColumn(0).setMinWidth(65);
 
-        columnModel.getColumn(1).setPreferredWidth(440);
-        columnModel.getColumn(1).setMaxWidth(440);
-        columnModel.getColumn(1).setMinWidth(440);
+        columnModel.getColumn(1).setPreferredWidth(530);
+        columnModel.getColumn(1).setMaxWidth(530);
+        columnModel.getColumn(1).setMinWidth(530);
 
-        columnModel.getColumn(2).setPreferredWidth(60);
-        columnModel.getColumn(2).setMaxWidth(60);
-        columnModel.getColumn(2).setMinWidth(60);
+        columnModel.getColumn(2).setPreferredWidth(80);
+        columnModel.getColumn(2).setMaxWidth(80);
+        columnModel.getColumn(2).setMinWidth(80);
 
-        columnModel.getColumn(3).setPreferredWidth(65);
-        columnModel.getColumn(3).setMaxWidth(65);
-        columnModel.getColumn(3).setMinWidth(65);
+        columnModel.getColumn(3).setPreferredWidth(80);
+        columnModel.getColumn(3).setMaxWidth(80);
+        columnModel.getColumn(3).setMinWidth(80);
 
-        columnModel.getColumn(4).setPreferredWidth(65);
-        columnModel.getColumn(4).setMaxWidth(65);
-        columnModel.getColumn(4).setMinWidth(65);
+        columnModel.getColumn(4).setPreferredWidth(80);
+        columnModel.getColumn(4).setMaxWidth(80);
+        columnModel.getColumn(4).setMinWidth(80);
 
-        columnModel.getColumn(5).setPreferredWidth(65);
+        columnModel.getColumn(5).setPreferredWidth(80);
 
         cartTable.setRowHeight(30); // Chiều cao hàng
         cartTable.getTableHeader().setReorderingAllowed(false);
         add(scrollPane, BorderLayout.CENTER);
 
         JPanel addItemPanel = new JPanel();
-        JLabel maLabel = new JLabel("Mã sản phẩm: ");
-        JTextField maTextField = new JTextField();
-        maTextField.setPreferredSize(new Dimension(200, 25));
+        JLabel barcodeLabel = new JLabel("Mã sản phẩm: ");
+        
+        barcodeTextField = new JTextField();
+        barcodeTextField.setPreferredSize(new Dimension(200, 25));
 
         // NHẬP SẢN PHẨM
         JButton addItemBtn = new JButton("Nhập");
@@ -125,13 +125,21 @@ public class CenterLeftPanel extends JPanel{
         addItemBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                String code = maTextField.getText().trim();               
+                String code = barcodeTextField.getText().trim();               
                 if (code.isEmpty()){
                     JOptionPane.showMessageDialog(null, "Mã sản phẩm không được để trống");
                     return;
                 }
                 addItem(code, inventory);
-                maTextField.setText("");              
+                barcodeTextField.setText("");   
+                barcodeTextField.requestFocus();           
+            }
+        });
+
+        barcodeTextField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                addItemBtn.doClick(0);
             }
         });
 
@@ -144,6 +152,7 @@ public class CenterLeftPanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e){
                 deleteItem();
+                barcodeTextField.requestFocus();
             }
         });
 
@@ -177,8 +186,8 @@ public class CenterLeftPanel extends JPanel{
             }
         });
 
-        addItemPanel.add(maLabel);
-        addItemPanel.add(maTextField);
+        addItemPanel.add(barcodeLabel);
+        addItemPanel.add(barcodeTextField);
         addItemPanel.add(addItemBtn);
         addItemPanel.add(delteItemBtn);
         addItemPanel.add(updateQuantityBtn);
@@ -246,7 +255,7 @@ public class CenterLeftPanel extends JPanel{
         tableModel.setRowCount(0);
         for (OrderItem item : order.getItems()) {
             ProductInfo p = item.getProduct();
-            Object[] rowData = {p.getID(), p.getName(), item.getQuantity(), p.getSalePrice(), p.getDiscount(), item.getAmount()};
+            Object[] rowData = {tableModel.getRowCount()+1, p.getName(), item.getQuantity(), p.getSalePrice(), p.getDiscount(), item.getAmount()};
             tableModel.addRow(rowData);
         }
         isUpdating = false;
@@ -260,11 +269,22 @@ public class CenterLeftPanel extends JPanel{
         if (totalAmountLabel != null){
             totalAmountLabel.setText(order.getTotalAmount() + "đ");
         }
+        if (barcodeTextField != null) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    barcodeTextField.requestFocusInWindow();
+                }
+            });
+        }
     }
     public void clear(){
         if(order != null){
             order.clear();
             reprintUI();
         }
+    }
+    public Order getOrder(){
+        return this.order;
     }
 }

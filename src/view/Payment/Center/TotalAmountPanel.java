@@ -4,7 +4,7 @@ import java.awt.*;
 public class TotalAmountPanel extends JPanel {
     public TotalAmountPanel(CenterLeftPanel cart){
         setLayout(new GridLayout(3,2,5,5));
-        setMaximumSize(new Dimension(360, 100));
+        setMaximumSize(new Dimension(540, 100));
         
         JLabel subTotalLabel = new JLabel("Tổng tiền hàng: ");
         subTotalLabel.setFont(new Font("Arial", Font.BOLD, 18));

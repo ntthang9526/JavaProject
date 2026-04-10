@@ -14,7 +14,7 @@ public class CenterRightPanel extends JPanel{
     public CenterRightPanel(InventoryManage inventory, CenterLeftPanel cart , CustomerManage customerManage){
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(Color.WHITE);
-        setPreferredSize(new Dimension(400,580));
+        setPreferredSize(new Dimension(580,580));
         setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 
         OtherItemPanel otherItemsPanel = new OtherItemPanel(inventory, cart); // KHU VỰC ORDER THÊM                 

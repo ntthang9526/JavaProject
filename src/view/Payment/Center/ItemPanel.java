@@ -1,4 +1,5 @@
 package Project.src.view.Payment.Center;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ public class ItemPanel extends JPanel {
         for (ProductInfo p : pList) {
             String btnText = "<html><center>" + p.getName() + "<br/><b>" + (p.getSalePrice() - p.getDiscount()) + "đ</b></center></html>";
             Buttons btn = new Buttons(btnText, 0);
+            btn.setPreferredSize(new Dimension(50,80));
+            btn.setFocusable(false);
             add(btn);
             btn.addActionListener(new ActionListener() {
                 @Override

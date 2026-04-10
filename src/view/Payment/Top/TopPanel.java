@@ -35,7 +35,6 @@ public class TopPanel extends JPanel {
                 paymentPanelButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e){
-                        System.out.println("Nút Thanh Toán ĐÃ ĐƯỢC BẤM!");
                         cardLayout.show(mainContentPanel, "TRANG THANH TOÁN");
                     }
                 }); 

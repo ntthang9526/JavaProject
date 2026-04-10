@@ -48,10 +48,10 @@ public class InventoryManage {
     // NHÓM 3: HÀNG SIÊU THỊ MINI (Tạp hóa)
     // (Mã vạch dài - Test độ co giãn của cột Tên Sản Phẩm trên JTable)
     // ==========================================
-    addProduct(new ProductInfo(11, "FOOD-HH", "6", "Mì Hảo Hảo Tôm Chua Cay", 3000, 4000,0, 500));
-    addProduct(new ProductInfo(12, "FOOD-OM", "7", "Mì Omachi Xốt Vang", 6000, 8500,0, 200));
-    addProduct(new ProductInfo(13, "FOOD-GAO", "8", "Gạo Đặc Sản ST25 Túi 5kg", 150000, 185000,0, 30));
-    addProduct(new ProductInfo(14, "FOOD-NM", "9", "Nước Mắm Chinsu Cá Hồi", 35000, 46000,0, 80));
-    addProduct(new ProductInfo(15, "FOOD-DA", "10", "Dầu Ăn Tường An 1 Lít", 45000, 55000,0, 60));
+    addProduct(new ProductInfo(16, "FOOD-HH", "8936221044177", "Mì Hảo Hảo Tôm Chua Cay", 3000, 4000,0, 500));
+    addProduct(new ProductInfo(17, "FOOD-OM", "7", "Mì Omachi Xốt Vang", 6000, 8500,0, 200));
+    addProduct(new ProductInfo(18, "FOOD-GAO", "8", "Gạo Đặc Sản ST25 Túi 5kg", 150000, 185000,0, 30));
+    addProduct(new ProductInfo(19, "FOOD-NM", "9", "Nước Mắm Chinsu Cá Hồi", 35000, 46000,0, 80));
+    addProduct(new ProductInfo(20, "FOOD-DA", "10", "Dầu Ăn Tường An 1 Lít", 45000, 55000,0, 60));
     }
 }

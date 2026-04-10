@@ -10,12 +10,12 @@ import java.awt.event.ActionListener;
 public class CustomerInfoPanel extends JPanel {
     public CustomerInfoPanel(CustomerManage customerManage){
         setLayout(new BorderLayout());
-        setMaximumSize(new Dimension(360, 120));
+        setMaximumSize(new Dimension(540, 120));
 
         JPanel customerInfo = new JPanel();
         JLabel cLabel = new JLabel("Mã KH: ");
         JTextField cTextField = new JTextField();
-        cTextField.setPreferredSize(new Dimension(120, 25));
+        cTextField.setPreferredSize(new Dimension(180, 25));
         customerInfo.add(cLabel);
         customerInfo.add(cTextField);
         JButton addCustomerInfoBtn = new JButton("Nhập");

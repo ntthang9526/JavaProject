@@ -18,6 +18,7 @@ public class Frame extends JFrame{
         this.setSize(1200,700);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         CustomerManage customerManage = new CustomerManage();
@@ -37,12 +38,11 @@ public class Frame extends JFrame{
             
             JPanel centerPanel = new JPanel();
             centerPanel.setLayout(new BorderLayout());
-            centerPanel.setPreferredSize(new Dimension(1000,580));
             paymentPanel.add(centerPanel, BorderLayout.CENTER);
             
             // HIỂN THỊ DANH SÁCH SẢN PHẨM MUA (CENTER LEFT)
             CenterLeftPanel cartPanel = new CenterLeftPanel(inventory);
-            centerPanel.add(cartPanel);
+            centerPanel.add(cartPanel, BorderLayout.CENTER);
             
             // PHẦN ORDER THÊM VÀ THÔNG TIN KH VÀ TỔNG TIỀN (CENTER RIGHT)
             CenterRightPanel centerRightPanel = new CenterRightPanel(inventory, cartPanel, customerManage);
