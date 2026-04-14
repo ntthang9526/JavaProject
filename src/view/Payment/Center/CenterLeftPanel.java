@@ -7,9 +7,9 @@ import Project.src.core.InventoryManage;
 import Project.src.core.Order;
 import Project.src.core.OrderItem;
 import Project.src.core.ProductInfo;
+import Project.src.view.Numpad;
 
 import javax.swing.*;
-import javax.swing.event.TableModelEvent;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -19,52 +19,24 @@ public class CenterLeftPanel extends JPanel{
     public DefaultTableModel tableModel;
     private Order order;
     private JTextField barcodeTextField;
-    private boolean isUpdating = false;
     private JLabel subTotalLabel;
     private JLabel totalDiscountLabel;
     private JLabel totalAmountLabel;
+
     public CenterLeftPanel(InventoryManage inventory){
         setLayout(new BorderLayout());
         setBackground(new Color(0x26D6E0));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setPreferredSize(new Dimension(560,400));
-
         order = new Order();
         String[] columnNames = {"STT","Tên sản phẩm","Số lượng","Đơn giá","Chiết khấu","Thành tiền"}; //Danh sách các cột
         tableModel = new DefaultTableModel(columnNames,0){
             @Override
                 public boolean isCellEditable(int row, int column) {
                     // Cho phép chỉnh sửa các cột
-                    if (column == 2){
-                        return true;
-                    }
                     return false; 
                 }
-        }; // Tạo bảng mặc định gồm các cột
-        // SỬA SỐ LƯỢNG VÀ GIÁ TIỀN
-        tableModel.addTableModelListener(new javax.swing.event.TableModelListener() {
-            @Override
-            public void tableChanged(javax.swing.event.TableModelEvent e){
-                if (isUpdating == true) return;
-
-                if (e.getType() == TableModelEvent.UPDATE){
-                    int row = e.getFirstRow();
-                    int column = e.getColumn();
-
-                    if (column == 2){
-                        try{
-                            int newQuantity = Integer.parseInt(tableModel.getValueAt(row, 2).toString());
-                            changeOrderItemQuantity(row, newQuantity);
-                        }
-                        catch(NumberFormatException err){
-                            JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng hợp lệ");
-                            reprintUI();
-                        }
-                    }
-                }
-
-            }
-        });
+        };
 
         cartTable = new JTable(tableModel);  //Tạo bảng
         JScrollPane scrollPane = new JScrollPane(cartTable); // Tạo thanh cuộn 
@@ -167,20 +139,67 @@ public class CenterLeftPanel extends JPanel{
                 
                 if (selectedRow != -1){
                     String tenMon = tableModel.getValueAt(selectedRow, 1).toString();
-                    String input = JOptionPane.showInputDialog(null, 
-                    "Nhập số lượng mới cho món: " + tenMon, 
-                    "Sửa Số Lượng", 
-                    JOptionPane.QUESTION_MESSAGE);
+                    Window parentWindow = SwingUtilities.getWindowAncestor(CenterLeftPanel.this);
 
-                    if (input != null && input.trim().isEmpty() == false){
-                        try{
-                            int newQuantity = Integer.parseInt(input.trim());
-                            changeOrderItemQuantity(selectedRow, newQuantity);
+                    JDialog updateQuantityDialog = new JDialog((Frame) parentWindow, "Sửa số lượng: " + tenMon, true);
+                    updateQuantityDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    updateQuantityDialog.setResizable(false);
+                    updateQuantityDialog.setSize(400, 400);
+                    updateQuantityDialog.setLayout(new BorderLayout(10, 10));
+
+                    JPanel topPanel = new JPanel();
+                    JLabel quantityLabel = new JLabel("Nhập số lượng mới: ");
+                    quantityLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+
+                    JTextField quantityField = new JTextField();
+                    quantityField.setPreferredSize(new Dimension(100, 30));
+                    topPanel.add(quantityLabel);
+                    topPanel.add(quantityField);
+
+                    updateQuantityDialog.add(topPanel, BorderLayout.NORTH);
+
+                    JPanel centerPanel = new JPanel();
+                    centerPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 10, 20));
+                    Numpad numpad = new Numpad(quantityField);
+                    numpad.setPreferredSize(new Dimension(300, 250));
+                    centerPanel.add(numpad, BorderLayout.CENTER);
+                    updateQuantityDialog.add(centerPanel, BorderLayout.CENTER);
+
+                    JPanel bottomPanel = new JPanel();
+                    JButton btnCancel = new JButton("Hủy");
+                    btnCancel.setBackground(Color.RED);
+                    btnCancel.setForeground(Color.WHITE);
+                    btnCancel.setFocusPainted(false);
+                    btnCancel.setPreferredSize(new Dimension(100, 40));
+                    
+                    JButton btnConfirm = new JButton("Xác nhận");
+                    btnConfirm.setBackground(new Color(0, 184, 148));
+                    btnConfirm.setForeground(Color.WHITE);
+                    btnConfirm.setFocusPainted(false);
+                    btnConfirm.setPreferredSize(new Dimension(100, 40));
+                    bottomPanel.add(btnCancel);
+                    bottomPanel.add(btnConfirm);
+                    updateQuantityDialog.add(bottomPanel, BorderLayout.SOUTH);
+
+                    btnCancel.addActionListener(ev -> {
+                        updateQuantityDialog.dispose();
+                    });
+
+                    btnConfirm.addActionListener(ev -> {
+                        String input = quantityField.getText().trim();
+                        if (!input.isEmpty()){
+                            try{
+                                int newQuantity = Integer.parseInt(input);
+                                changeOrderItemQuantity(selectedRow, newQuantity);
+                                updateQuantityDialog.dispose();
+                            }
+                            catch(NumberFormatException err){
+                                JOptionPane.showMessageDialog(updateQuantityDialog, "Vui lòng nhập số hợp lệ!");
+                            }
                         }
-                        catch(NumberFormatException err){
-                            JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng hợp lệ");
-                        }
-                    }
+                    });
+                    updateQuantityDialog.setLocationRelativeTo(parentWindow);
+                    updateQuantityDialog.setVisible(true);
                 }
 
             }
@@ -251,14 +270,12 @@ public class CenterLeftPanel extends JPanel{
         this.totalDiscountLabel = label;
     }
     public void reprintUI(){
-        isUpdating = true;
         tableModel.setRowCount(0);
         for (OrderItem item : order.getItems()) {
             ProductInfo p = item.getProduct();
             Object[] rowData = {tableModel.getRowCount()+1, p.getName(), item.getQuantity(), p.getSalePrice(), p.getDiscount(), item.getAmount()};
             tableModel.addRow(rowData);
         }
-        isUpdating = false;
         if (subTotalLabel != null){
             subTotalLabel.setText(order.getSubTotal() + "đ");
         }
@@ -284,7 +301,19 @@ public class CenterLeftPanel extends JPanel{
             reprintUI();
         }
     }
+    public void saveOrder(){
+        if (order != null && order.getItems().size() > 0){
+            // Lưu vào DB
+            clear();
+        }
+    }
+    public DefaultTableModel getTableModel(){
+        return this.tableModel;
+    }
     public Order getOrder(){
         return this.order;
+    }
+    public JTextField getBarcodeTextField(){
+        return this.barcodeTextField;
     }
 }

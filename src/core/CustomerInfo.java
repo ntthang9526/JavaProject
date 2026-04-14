@@ -1,13 +1,13 @@
 package Project.src.core;
 
-public class Customer {
+public class CustomerInfo {
     private String ID;
     private String name;
     private int point;
     private int availablePoint;
     private String rank;
 
-    public Customer(String ID, String name, int point, int availablePoint, String rank){
+    public CustomerInfo(String ID, String name, int point, int availablePoint, String rank){
         this.ID = ID;
         this.name = name;
         this.point = point;

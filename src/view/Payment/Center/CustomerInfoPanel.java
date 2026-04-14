@@ -1,20 +1,21 @@
 package Project.src.view.Payment.Center;
 import javax.swing.*;
 
-import Project.src.core.Customer;
+import Project.src.core.CustomerInfo;
 import Project.src.core.CustomerManage;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class CustomerInfoPanel extends JPanel {
+    private JTextField cTextField;
     public CustomerInfoPanel(CustomerManage customerManage){
         setLayout(new BorderLayout());
         setMaximumSize(new Dimension(540, 120));
 
         JPanel customerInfo = new JPanel();
         JLabel cLabel = new JLabel("Mã KH: ");
-        JTextField cTextField = new JTextField();
+        cTextField = new JTextField();
         cTextField.setPreferredSize(new Dimension(180, 25));
         customerInfo.add(cLabel);
         customerInfo.add(cTextField);
@@ -97,7 +98,7 @@ public class CustomerInfoPanel extends JPanel {
                     JOptionPane.showMessageDialog(null, "Vui lòng nhập mã khách hàng!");
                     return;
                 }
-                Customer customer = customerManage.findCustomer(code);
+                CustomerInfo customer = customerManage.findCustomer(code);
                 if (customer == null){
                     JOptionPane.showMessageDialog(null, "Không tìm thấy khách hàng");
                     cTextField.setText("");
@@ -122,5 +123,8 @@ public class CustomerInfoPanel extends JPanel {
                 customerRank.setText("");
             }
         });
+    }
+    public JTextField getCustomerTextField(){
+        return this.cTextField;
     }
 }

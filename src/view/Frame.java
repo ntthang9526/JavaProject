@@ -3,6 +3,7 @@ import javax.swing.*;
 
 import Project.src.core.CustomerManage;
 import Project.src.core.InventoryManage;
+import Project.src.core.VoucherManage;
 import Project.src.view.Payment.Bottom.BottomPanel;
 import Project.src.view.Payment.Center.CenterLeftPanel;
 import Project.src.view.Payment.Center.CenterRightPanel;
@@ -10,7 +11,6 @@ import Project.src.view.Payment.Top.TopPanel;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Dimension;
 
 public class Frame extends JFrame{
     public Frame(){
@@ -25,6 +25,8 @@ public class Frame extends JFrame{
         customerManage.loadData();
         InventoryManage inventory = new InventoryManage();
         inventory.loadData();
+        VoucherManage voucherManage = new VoucherManage();
+        voucherManage.loadData();
         // KHI CLICK VÀO CÁC NÚT SẼ ĐỔI SANG CHỨC NĂNG KHÁC
         CardLayout cardLayout = new CardLayout();
         JPanel mainContentPanel = new JPanel(cardLayout);

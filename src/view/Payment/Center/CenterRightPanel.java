@@ -20,10 +20,14 @@ public class CenterRightPanel extends JPanel{
         OtherItemPanel otherItemsPanel = new OtherItemPanel(inventory, cart); // KHU VỰC ORDER THÊM                 
         add(otherItemsPanel);
         add(Box.createVerticalStrut(20));
+
+        cart.getBarcodeTextField().addFocusListener(otherItemsPanel.numpadFocusListener);
         
         CustomerInfoPanel customerInfoPanel = new CustomerInfoPanel(customerManage); // KHU VỰC THÔNG TIN KHÁCH HÀNG VÀ VOUCHER
         add(customerInfoPanel);
         add(Box.createVerticalStrut(20));
+
+        customerInfoPanel.getCustomerTextField().addFocusListener(otherItemsPanel.numpadFocusListener);
 
         TotalAmountPanel totalAmountPanel = new TotalAmountPanel(cart); // KHU VỰC TỔNG TIỀN
         add(totalAmountPanel);

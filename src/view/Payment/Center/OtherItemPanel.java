@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -13,8 +13,10 @@ import java.awt.event.*;
 import Project.src.core.InventoryManage;
 import Project.src.core.ProductInfo;
 import Project.src.view.Buttons;
+import Project.src.view.Numpad;
 
 public class OtherItemPanel extends JPanel{
+    private Numpad numpad;
     public OtherItemPanel(InventoryManage inventory, CenterLeftPanel cart){
         setLayout(new BorderLayout());
         setMaximumSize(new Dimension(540,400));
@@ -24,8 +26,11 @@ public class OtherItemPanel extends JPanel{
         foodBtn.setFocusable(false);
         Buttons drinkBtn = new Buttons("Đồ uống", 100, 40, Color.cyan);
         drinkBtn.setFocusable(false);
+        Buttons numpadBtn = new Buttons("Bàn phím", 100, 40, Color.cyan);
+        numpadBtn.setFocusable(false);
         otherItemsBar.add(foodBtn);
         otherItemsBar.add(drinkBtn);
+        otherItemsBar.add(numpadBtn);
         add(otherItemsBar, BorderLayout.NORTH);
 
         CardLayout otherItemsCardLayout = new CardLayout(); // DANH MỤC ĐỒ ĂN VÀ ĐỒ UỐNG
@@ -61,7 +66,11 @@ public class OtherItemPanel extends JPanel{
         
             dscrollPane.setBorder(BorderFactory.createEmptyBorder()); 
             dscrollPane.getVerticalScrollBar().setUnitIncrement(16);
-            otherItems.add(dscrollPane,"ĐỒ UỐNG");                
+            otherItems.add(dscrollPane,"ĐỒ UỐNG");
+            
+            numpad = new Numpad();
+            otherItems.add(numpad, "Bàn phím");
+        
         add(otherItems, BorderLayout.CENTER);
         
         foodBtn.addActionListener(new ActionListener() {
@@ -76,5 +85,17 @@ public class OtherItemPanel extends JPanel{
                 otherItemsCardLayout.show(otherItems, "ĐỒ UỐNG");
             }
         });
+        numpadBtn.addActionListener(e -> {
+            otherItemsCardLayout.show(otherItems, "Bàn phím");
+        });
     }
+    public FocusAdapter numpadFocusListener = new FocusAdapter() {
+        @Override
+        public void focusGained(FocusEvent e){
+            JTextField activeTextField = (JTextField) e.getSource();
+            if (numpad != null) {
+                numpad.setTarget(activeTextField);
+            }
+        }
+    };
 }
