@@ -11,23 +11,29 @@ public class CustomerInfoPanel extends JPanel {
     private JTextField cTextField;
     public CustomerInfoPanel(CustomerManage customerManage){
         setLayout(new BorderLayout());
-        setMaximumSize(new Dimension(540, 120));
+        setMaximumSize(new Dimension(260, 120));
 
         JPanel customerInfo = new JPanel();
         JLabel cLabel = new JLabel("Mã KH: ");
         cTextField = new JTextField();
-        cTextField.setPreferredSize(new Dimension(180, 25));
+        cTextField.setPreferredSize(new Dimension(80, 25));
         customerInfo.add(cLabel);
         customerInfo.add(cTextField);
         JButton addCustomerInfoBtn = new JButton("Nhập");
         addCustomerInfoBtn.setFocusable(false);
         addCustomerInfoBtn.setBackground(Color.white);
         addCustomerInfoBtn.setFocusPainted(false);
-
+        addCustomerInfoBtn.setPreferredSize(new Dimension(50, 25));
+        addCustomerInfoBtn.setMargin(new Insets(0, 0, 0, 0));
+        addCustomerInfoBtn.setFont(new Font("Arial", Font.PLAIN, 12));
+        
         JButton resetCustomerInfoBtn = new JButton("Xóa");
         resetCustomerInfoBtn.setFocusable(false);
         resetCustomerInfoBtn.setBackground(Color.white);
         resetCustomerInfoBtn.setFocusPainted(false);
+        resetCustomerInfoBtn.setMargin(new Insets(0, 0, 0, 0));
+        resetCustomerInfoBtn.setFont(new Font("Arial", Font.PLAIN, 12));
+        resetCustomerInfoBtn.setPreferredSize(new Dimension(30, 25));
         customerInfo.add(addCustomerInfoBtn);
         customerInfo.add(resetCustomerInfoBtn);
 

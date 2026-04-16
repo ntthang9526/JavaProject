@@ -5,8 +5,9 @@ import javax.swing.border.EmptyBorder;
 
 import Project.src.view.Numpad;
 import Project.src.view.Payment.Center.CenterLeftPanel;
+import Project.src.view.Payment.Center.CenterRightPanel;
 public class PaymentDialog extends JDialog {
-    public PaymentDialog( Frame parent,CenterLeftPanel cart){
+    public PaymentDialog( Frame parent,CenterLeftPanel cart, CenterRightPanel centerRightPanel){
         super(parent, "Xác nhận thanh toán", true);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setSize(400, 500);
@@ -135,6 +136,7 @@ public class PaymentDialog extends JDialog {
         completeButton.addActionListener(e -> {
             // Lưu hóa đơn vào DB
             cart.saveOrder();
+            centerRightPanel.removeVoucher();
             dispose();
         });
     }

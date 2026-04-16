@@ -7,6 +7,7 @@ import Project.src.core.InventoryManage;
 import Project.src.core.Order;
 import Project.src.core.OrderItem;
 import Project.src.core.ProductInfo;
+import Project.src.core.VoucherInfo;
 import Project.src.view.Numpad;
 
 import javax.swing.*;
@@ -315,5 +316,11 @@ public class CenterLeftPanel extends JPanel{
     }
     public JTextField getBarcodeTextField(){
         return this.barcodeTextField;
+    }
+    public void addVoucher(VoucherInfo v){
+        order.addVoucherDiscount(v);
+    }
+    public void removeVoucher(){
+        order.removeVoucherDiscount();
     }
 }

@@ -2,13 +2,17 @@ package Project.src.view.Payment.Bottom;
 
 import javax.swing.*;
 import java.util.Date;
+
 import Project.src.view.Payment.Center.CenterLeftPanel;
+import Project.src.view.Payment.Center.CenterRightPanel;
+import Project.src.view.Payment.Center.VoucherInfoPanel;
+
 import java.awt.event.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 
 public class BottomPanel extends JPanel {
-    public BottomPanel(CenterLeftPanel cart){
+    public BottomPanel(CenterLeftPanel cart, CenterRightPanel centerRightPanel){
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
         setPreferredSize(new Dimension(1000,50));
@@ -56,6 +60,7 @@ public class BottomPanel extends JPanel {
             public void actionPerformed(ActionEvent e){
                 int choice = JOptionPane.showConfirmDialog(null, "Bạn có muốn hủy hóa đơn", "Hủy hóa đơn", JOptionPane.YES_NO_OPTION );
                 if (choice == JOptionPane.YES_OPTION){
+                    centerRightPanel.removeVoucher();
                     cart.clear();
                 }
             }
@@ -69,7 +74,7 @@ public class BottomPanel extends JPanel {
                     return;
                 }
                 Window parentWindow = SwingUtilities.getWindowAncestor(BottomPanel.this); // Tìm frame cha
-                PaymentDialog paymentDialog = new PaymentDialog((Frame) parentWindow, cart);
+                PaymentDialog paymentDialog = new PaymentDialog((Frame) parentWindow, cart, centerRightPanel);
                 paymentDialog.setVisible(true);
             }
         });

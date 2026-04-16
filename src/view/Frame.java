@@ -47,10 +47,10 @@ public class Frame extends JFrame{
             centerPanel.add(cartPanel, BorderLayout.CENTER);
             
             // PHẦN ORDER THÊM VÀ THÔNG TIN KH VÀ TỔNG TIỀN (CENTER RIGHT)
-            CenterRightPanel centerRightPanel = new CenterRightPanel(inventory, cartPanel, customerManage);
+            CenterRightPanel centerRightPanel = new CenterRightPanel(inventory, cartPanel, customerManage, voucherManage);
             centerPanel.add(centerRightPanel, BorderLayout.EAST);
             // PANEL DƯỚI
-            BottomPanel bottomPanel = new BottomPanel(cartPanel);
+            BottomPanel bottomPanel = new BottomPanel(cartPanel, centerRightPanel);
             paymentPanel.add(bottomPanel, BorderLayout.SOUTH);
             // HẾT TRANG THANH TOÁN
 

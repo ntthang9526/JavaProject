@@ -6,6 +6,7 @@ public class Order {
     private String OrderID;
     private List<OrderItem> items = new ArrayList<>();
     private int subTotal;
+    private int voucherDiscount;
     private int totalDiscount;
     private int totalAmount;
     private String customerID;
@@ -14,17 +15,17 @@ public class Order {
         for (OrderItem it : items) {
             if (it.getProduct().getID() == i.getID()){
                 it.setQuantity(it.getQuantity() + 1);
-                caculateTotalAmount();
+                calculateTotalAmount();
                 return;
             }
         }
         items.add(new OrderItem(i, 1));
-        caculateTotalAmount();
+        calculateTotalAmount();
     }
     public void remove(int index){
         if (index >= 0 && index < items.size()){
             items.remove(index);
-            caculateTotalAmount();
+            calculateTotalAmount();
         }
     }
     public void updateQuantity(int index, int newQuantity){
@@ -34,27 +35,34 @@ public class Order {
             }
             else if (newQuantity < 0){
                 items.get(index).setQuantity(1);
-                caculateTotalAmount();
+                calculateTotalAmount();
             }
             else{
                 items.get(index).setQuantity(newQuantity);
-                caculateTotalAmount();
+                calculateTotalAmount();
             }
         }
     }
-    public void caculateTotalAmount(){
-        caculateSubTotal();
-        caculateTotalDiscount();
-    
+    public void calculateTotalAmount(){
+        calculateSubTotal();
+        calculateTotalDiscount();
+        
+        totalDiscount += voucherDiscount;
         totalAmount = subTotal - totalDiscount;
+        if (totalDiscount > subTotal){
+            totalDiscount = subTotal;
+        }
+        if (totalAmount < 0){
+            totalAmount = 0;
+        }
     }
-    public void caculateTotalDiscount(){
+    public void calculateTotalDiscount(){
         totalDiscount = 0;
         for (OrderItem item : items) {
             totalDiscount += (item.getDiscount() * item.getQuantity());
         }
     }
-    public void caculateSubTotal(){
+    public void calculateSubTotal(){
         subTotal = 0;
         for (OrderItem item : items) {
             subTotal += (item.getSalePrice() * item.getQuantity());
@@ -77,7 +85,20 @@ public class Order {
         return this.OrderID;
     }
     public void clear(){
+        this.voucherDiscount = 0;
         items.clear();
-        caculateTotalAmount();
+        calculateTotalAmount();
+    }
+    public void addVoucherDiscount(VoucherInfo v){
+        if (v != null){
+            this.voucherDiscount = v.getVoucherDiscount();
+            totalDiscount += voucherDiscount;
+            calculateTotalAmount();
+        }
+    }
+    public void removeVoucherDiscount(){
+        this.voucherDiscount = 0;
+        totalDiscount -= voucherDiscount;
+        calculateTotalAmount();
     }
 }
