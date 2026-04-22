@@ -4,6 +4,7 @@ import javax.swing.*;
 import Project.src.core.CustomerManage;
 import Project.src.core.InventoryManage;
 import Project.src.core.VoucherManage;
+import Project.src.view.Manage.ManagerFrame;
 import Project.src.view.Payment.Bottom.BottomPanel;
 import Project.src.view.Payment.Center.CenterLeftPanel;
 import Project.src.view.Payment.Center.CenterRightPanel;
@@ -55,7 +56,7 @@ public class Frame extends JFrame{
             // HẾT TRANG THANH TOÁN
 
             // TRANG QUẢN LÝ
-            JPanel managePanel = new JPanel();
+            JPanel managePanel = new ManagerFrame();
             mainContentPanel.add(managePanel, "TRANG QUẢN LÝ");
                 
         this.setVisible(true);

@@ -1,5 +1,6 @@
 package Project.src.view.Payment.Center;
 
+import java.util.List;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -35,13 +36,7 @@ public class OtherItemPanel extends JPanel{
 
         CardLayout otherItemsCardLayout = new CardLayout(); // DANH MỤC ĐỒ ĂN VÀ ĐỒ UỐNG
         JPanel otherItems = new JPanel(otherItemsCardLayout);
-            ArrayList<ProductInfo> fList = new ArrayList<>();
-            for (int i = 1;i <= 12; i++){
-                ProductInfo item = inventory.findByID(i);
-                if (item != null){
-                    fList.add(inventory.findByID(i));
-                }
-            }
+            List<ProductInfo> fList = inventory.findByCategory("DO-AN-NHANH");
             JPanel foodPanel = new ItemPanel(fList, cart);
             JPanel fwrapper = new JPanel(new BorderLayout());
             fwrapper.add(foodPanel, BorderLayout.NORTH);
@@ -52,13 +47,7 @@ public class OtherItemPanel extends JPanel{
             
             otherItems.add(fscrollPane, "ĐỒ ĂN");
 
-            ArrayList<ProductInfo> dList = new ArrayList<>();
-            for (int i = 1;i <= 25; i++){
-                ProductInfo item = inventory.findByID(i);
-                if (item != null){
-                    dList.add(inventory.findByID(i));
-                }
-            }
+            List<ProductInfo> dList = inventory.findByCategory("DO-UONG-NHANH");
             JPanel drinkPanel = new ItemPanel(dList, cart);
             JPanel dwrapper = new JPanel(new BorderLayout());
             dwrapper.add(drinkPanel, BorderLayout.NORTH);

@@ -1,16 +1,31 @@
 package Project.src.core;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 public class Order {
     private String OrderID;
     private List<OrderItem> items = new ArrayList<>();
     private int subTotal;
+    private int productDiscount;
     private int voucherDiscount;
     private int totalDiscount;
     private int totalAmount;
+    private LocalDateTime date;
     private String customerID;
+    private String voucherCode;
 
+    public Order(){}
+    public Order(String id, int subTotal, int productDiscount, int voucherDiscount, int totalDiscount, int totalAmount, LocalDateTime date, String customerID, String voucherCode){
+        this.OrderID = id;
+        this.subTotal = subTotal;
+        this.productDiscount = productDiscount;
+        this.voucherDiscount = voucherDiscount;
+        this.totalDiscount = totalDiscount;
+        this.date = date;
+        this.customerID = customerID;
+        this.voucherCode = voucherCode;
+    }
     public void add(ProductInfo i){
         for (OrderItem it : items) {
             if (it.getProduct().getID() == i.getID()){
@@ -45,9 +60,9 @@ public class Order {
     }
     public void calculateTotalAmount(){
         calculateSubTotal();
-        calculateTotalDiscount();
+        calculateProductDiscount();
         
-        totalDiscount += voucherDiscount;
+        totalDiscount = productDiscount + voucherDiscount;
         totalAmount = subTotal - totalDiscount;
         if (totalDiscount > subTotal){
             totalDiscount = subTotal;
@@ -56,10 +71,10 @@ public class Order {
             totalAmount = 0;
         }
     }
-    public void calculateTotalDiscount(){
-        totalDiscount = 0;
+    public void calculateProductDiscount(){
+        productDiscount = 0;
         for (OrderItem item : items) {
-            totalDiscount += (item.getDiscount() * item.getQuantity());
+            productDiscount += (item.getDiscount() * item.getQuantity());
         }
     }
     public void calculateSubTotal(){
@@ -75,11 +90,20 @@ public class Order {
     public int getSubTotal(){
         return this.subTotal;
     }
+    public int getProductDiscount(){
+        return this.productDiscount;
+    }
+    public int getVoucherDiscount(){
+        return this.voucherDiscount;
+    }
     public int getTotalDiscount(){
         return this.totalDiscount;
     }
     public List<OrderItem> getItems(){
         return items;
+    }
+    public void setOrderID(String s){
+        this.OrderID = s;
     }
     public String getOrderID(){
         return this.OrderID;
@@ -94,11 +118,45 @@ public class Order {
             this.voucherDiscount = v.getVoucherDiscount();
             totalDiscount += voucherDiscount;
             calculateTotalAmount();
+            this.voucherCode = v.getVoucherCode();
         }
     }
     public void removeVoucherDiscount(){
         this.voucherDiscount = 0;
         totalDiscount -= voucherDiscount;
         calculateTotalAmount();
+    }
+    public String getVoucherCode(){
+        return this.voucherCode;
+    }
+    public void setDate(LocalDateTime currDate){
+        this.date = currDate;
+    }
+    public LocalDateTime getDate(){
+        return this.date;
+    }
+    public void setCustomerID(CustomerInfo c){
+        this.customerID = c.getID();
+    }
+    public String getCustomerID(){
+        return this.customerID;
+    }
+
+    public void addCustomer(CustomerInfo c){
+        if (c != null){
+            setCustomerID(c);
+        }
+    }
+    public void removeCustomer(){
+        this.customerID = null;
+    }
+    public int getProductQuantityInOrder(ProductInfo p){
+        int soLuong = 0;
+        for (OrderItem orderItem : items) {
+            if (orderItem.getProduct().getID() == p.getID()){
+                soLuong += orderItem.getQuantity();
+            }
+        }
+        return soLuong;
     }
 }

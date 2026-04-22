@@ -112,10 +112,12 @@ public class PaymentDialog extends JDialog {
         add(paymentMethods, BorderLayout.CENTER);
 
         cashButton.addActionListener(e -> {
+            tienKhachDuaField.setText("");
             cardLayout.show(paymentInfo, "Tiền mặt");
         });
-
+        
         transferButton.addActionListener(e -> {
+            tienKhachDuaField.setText(cart.getOrder().getTotalAmount() + "");
             cardLayout.show(paymentInfo, "Chuyển khoản");
         });
 
@@ -135,6 +137,14 @@ public class PaymentDialog extends JDialog {
         actionBar.add(completeButton);
         completeButton.addActionListener(e -> {
             // Lưu hóa đơn vào DB
+            if (tienKhachDuaField.getText().isEmpty()){
+                JOptionPane.showMessageDialog(null, "Chưa nhập số tiền!");
+                return;
+            }
+            if (Integer.parseInt(tienKhachDuaField.getText()) < cart.getOrder().getTotalAmount() ){
+                JOptionPane.showMessageDialog(null, "Chưa đủ tiền!");
+                return;
+            }
             cart.saveOrder();
             centerRightPanel.removeVoucher();
             dispose();

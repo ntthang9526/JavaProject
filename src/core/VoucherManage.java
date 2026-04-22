@@ -3,6 +3,8 @@ package Project.src.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import Project.src.dao.VoucherInfoDAO;
+
 public class VoucherManage {
     private Map<String, VoucherInfo> voucherList = new HashMap<>();
 
@@ -13,8 +15,7 @@ public class VoucherManage {
         return voucherList.get(s);
     }
     public void loadData(){
-        addVoucher(new VoucherInfo("1","Voucher giảm giá 100000đ" , 10000));
-        addVoucher(new VoucherInfo("2","Voucher giảm giá 300000đ" , 300000));
-        addVoucher(new VoucherInfo("3","Thang3" , 10000));
+        VoucherInfoDAO voucherInfoDAO = new VoucherInfoDAO();
+        voucherList = voucherInfoDAO.getAllVoucherInfo();
     }
 }

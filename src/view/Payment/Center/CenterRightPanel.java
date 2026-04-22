@@ -27,7 +27,7 @@ public class CenterRightPanel extends JPanel{
 
         JPanel centerPanel = new JPanel(new GridLayout(1,2));
         centerPanel.setMaximumSize(new Dimension(540, 120));
-        CustomerInfoPanel customerInfoPanel = new CustomerInfoPanel(customerManage); // KHU VỰC THÔNG TIN KHÁCH HÀNG VÀ VOUCHER
+        CustomerInfoPanel customerInfoPanel = new CustomerInfoPanel(customerManage, cart); // KHU VỰC THÔNG TIN KHÁCH HÀNG VÀ VOUCHER
         voucherInfoPanel = new VoucherInfoPanel(voucherManage, cart);
         centerPanel.add(customerInfoPanel);
         centerPanel.add(voucherInfoPanel);

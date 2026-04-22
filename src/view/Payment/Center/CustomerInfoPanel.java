@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class CustomerInfoPanel extends JPanel {
     private JTextField cTextField;
-    public CustomerInfoPanel(CustomerManage customerManage){
+    public CustomerInfoPanel(CustomerManage customerManage, CenterLeftPanel cart){
         setLayout(new BorderLayout());
         setMaximumSize(new Dimension(260, 120));
 
@@ -50,10 +50,6 @@ public class CustomerInfoPanel extends JPanel {
         JLabel customerID = new JLabel("");
         final JLabel cName = new JLabel("Tên KH: ");
         JLabel customerName = new JLabel("");
-        final JLabel cPoint = new JLabel("Điểm: ");
-        JLabel customerPoint = new JLabel("");
-        final JLabel cRank = new JLabel("Hạng: ");
-        JLabel customerRank = new JLabel("");
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -75,25 +71,7 @@ public class CustomerInfoPanel extends JPanel {
         gbc.weightx = 0.9;
         showInfoPanel.add(customerName,gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.weightx = 0.1;
-        showInfoPanel.add(cPoint,gbc);
 
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.weightx = 0.9;
-        showInfoPanel.add(customerPoint,gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.weightx = 0.1;
-        showInfoPanel.add(cRank,gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 3;
-        gbc.weightx = 0.9;
-        showInfoPanel.add(customerRank,gbc);
         add(showInfoPanel, BorderLayout.CENTER);
 
         addCustomerInfoBtn.addActionListener(new ActionListener() {
@@ -110,14 +88,10 @@ public class CustomerInfoPanel extends JPanel {
                     cTextField.setText("");
                     return;
                 }
-                customer.setRank();
                 customerID.setText(customer.getID());
                 customerName.setText(customer.getName());
-                customerPoint.setText(Integer.toString(customer.getAvailablePoint()));
-                customerRank.setText(customer.getRank());
-                
                 cTextField.setText("");
-
+                cart.addCustomer(customer);
             }
         });
         resetCustomerInfoBtn.addActionListener(new ActionListener() {
@@ -125,8 +99,7 @@ public class CustomerInfoPanel extends JPanel {
             public void actionPerformed(ActionEvent e){
                 customerID.setText("");
                 customerName.setText("");
-                customerPoint.setText("");
-                customerRank.setText("");
+                cart.removeCustomer();
             }
         });
     }

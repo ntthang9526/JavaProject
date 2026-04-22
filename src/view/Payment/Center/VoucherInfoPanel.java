@@ -63,12 +63,18 @@ public class VoucherInfoPanel extends JPanel{
             String input = voucherField.getText();
             if (!input.isEmpty()){
                 VoucherInfo voucher = voucherManage.findVoucher(input);
-                if (voucher != null){
+                if (voucher != null && voucher.getVoucherQuantity() > 0){
                     cart.addVoucher(voucher);
                     cart.reprintUI();
                     voucherField.setText("");
                     voucherLbl.setText("Thông tin voucher: " + voucher.getVoucherNote());
                     isAddedVoucher = true;
+                    return;
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Voucher không tồn tại hoặc đã hết lượt sử dụng");
+                    voucherField.setText("");
+                    return;
                 }
             }
         });

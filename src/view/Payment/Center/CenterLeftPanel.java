@@ -3,17 +3,24 @@ package Project.src.view.Payment.Center;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
+import Project.src.core.CustomerInfo;
 import Project.src.core.InventoryManage;
 import Project.src.core.Order;
 import Project.src.core.OrderItem;
 import Project.src.core.ProductInfo;
 import Project.src.core.VoucherInfo;
+import Project.src.dao.CustomerInfoDAO;
+import Project.src.dao.OrderDAO;
+import Project.src.dao.OrderItemDAO;
+import Project.src.dao.ProductInfoDAO;
+import Project.src.dao.VoucherInfoDAO;
 import Project.src.view.Numpad;
 
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDateTime;
 
 public class CenterLeftPanel extends JPanel{
     private JTable cartTable;
@@ -190,7 +197,13 @@ public class CenterLeftPanel extends JPanel{
                         String input = quantityField.getText().trim();
                         if (!input.isEmpty()){
                             try{
+                                ProductInfo product = order.getItems().get(selectedRow).getProduct();
                                 int newQuantity = Integer.parseInt(input);
+                                if (newQuantity > product.getQuantity()){
+                                    JOptionPane.showMessageDialog(null, "Số lượng hàng trong kho không đủ!");
+                                    quantityField.setText("");
+                                    return;
+                                }
                                 changeOrderItemQuantity(selectedRow, newQuantity);
                                 updateQuantityDialog.dispose();
                             }
@@ -304,7 +317,25 @@ public class CenterLeftPanel extends JPanel{
     }
     public void saveOrder(){
         if (order != null && order.getItems().size() > 0){
-            // Lưu vào DB
+            LocalDateTime today = LocalDateTime.now();
+
+            OrderDAO orderDAO = new OrderDAO();
+            int count = orderDAO.countOrderInDay(today.toLocalDate());
+            String id = "HD" + today.getYear() + today.getMonthValue() + today.getDayOfMonth() + (count + 1);
+            order.setOrderID(id);
+            order.setDate(today);
+            if (orderDAO.saveOrder(order)){
+                OrderItemDAO orderItemDAO = new OrderItemDAO();
+                ProductInfoDAO productInfoDAO = new ProductInfoDAO();
+                CustomerInfoDAO customerInfoDAO = new CustomerInfoDAO();
+                VoucherInfoDAO voucherInfoDAO = new VoucherInfoDAO();
+               
+                orderItemDAO.saveOrderItems(order);
+                productInfoDAO.updateAllProductQuantity(order);         
+                voucherInfoDAO.updateVoucher(order);
+                customerInfoDAO.updateCustomer(order);
+                System.out.println("Lưu hóa đơn thành công");
+            }
             clear();
         }
     }
@@ -322,5 +353,11 @@ public class CenterLeftPanel extends JPanel{
     }
     public void removeVoucher(){
         order.removeVoucherDiscount();
+    }
+    public void addCustomer(CustomerInfo c){
+        order.addCustomer(c);
+    }
+    public void removeCustomer(){
+        order.removeCustomer();
     }
 }

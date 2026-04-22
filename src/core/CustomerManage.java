@@ -3,6 +3,8 @@ package Project.src.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import Project.src.dao.CustomerInfoDAO;
+
 public class CustomerManage {
     private Map<String, CustomerInfo> customerList = new HashMap<>();
 
@@ -13,8 +15,7 @@ public class CustomerManage {
         return customerList.get(s);
     }
     public void loadData(){
-        addCustomer(new CustomerInfo("1","Thang" , 100000, 10000, ""));
-        addCustomer(new CustomerInfo("2","Thang2" , 300000, 10000, ""));
-        addCustomer(new CustomerInfo("3","Thang3" , 10000000, 10000, ""));
+        CustomerInfoDAO customerInfoDAO = new CustomerInfoDAO();
+        customerList = customerInfoDAO.getCustomer();
     }
 }

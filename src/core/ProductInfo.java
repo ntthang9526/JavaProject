@@ -9,11 +9,13 @@ public class ProductInfo {
     private int salePrice;
     private int discount;
     private int quantity;
+    private String category;
+    private boolean status;
 
     public ProductInfo(){
 
     }
-    public ProductInfo(int productID, String SKU, String barcode, String Name,int importPrice, int salePrice,int discount, int quantity){
+    public ProductInfo(int productID, String SKU, String barcode, String Name,int importPrice, int salePrice,int discount, int quantity, String category, boolean status){
         this.productID = productID;
         SKU = SKU.substring(0).toUpperCase();
         this.productSKU = SKU;
@@ -23,6 +25,8 @@ public class ProductInfo {
         this.salePrice = salePrice;
         this.quantity = quantity;
         this.discount = discount;
+        this.category = category;
+        this.status = status;
     }
     public int getID(){
         return this.productID;
@@ -71,5 +75,17 @@ public class ProductInfo {
     }
     public int getDiscount(){
         return this.discount;
+    }
+    public String getCategory(){
+        return this.category;
+    }
+    public void setCategory(String c){
+        this.category = c;
+    }
+    public boolean getStatus(){
+        return this.status;
+    }
+    public void setStatus(boolean status){
+        this.status = status;
     }
 }

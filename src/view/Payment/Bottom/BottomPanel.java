@@ -5,7 +5,6 @@ import java.util.Date;
 
 import Project.src.view.Payment.Center.CenterLeftPanel;
 import Project.src.view.Payment.Center.CenterRightPanel;
-import Project.src.view.Payment.Center.VoucherInfoPanel;
 
 import java.awt.event.*;
 import java.awt.*;
@@ -20,27 +19,22 @@ public class BottomPanel extends JPanel {
         JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 12));
         infoPanel.setOpaque(false);
 
-        JLabel cashierLabel = new JLabel("Thu ngân: Admin");
-        cashierLabel.setForeground(Color.BLACK);
-        cashierLabel.setFont(new Font("Arial", Font.BOLD, 18));
-
         JLabel timeLabel = new JLabel();
         timeLabel.setForeground(Color.BLACK);
         timeLabel.setFont(new Font("Arial", Font.PLAIN, 18));
 
         SimpleDateFormat timeFormat = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
-        timeLabel.setText("|   Ngày " + timeFormat.format(new Date()));
+        timeLabel.setText("Ngày " + timeFormat.format(new Date()));
         Timer clockTimer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String timeNow = timeFormat.format(new Date());
-                timeLabel.setText("|   Ngày " + timeNow);
+                timeLabel.setText("Ngày " + timeNow);
             }
         });
         
         clockTimer.start();
 
-        infoPanel.add(cashierLabel);
         infoPanel.add(timeLabel);
         add(infoPanel, BorderLayout.WEST);
 
